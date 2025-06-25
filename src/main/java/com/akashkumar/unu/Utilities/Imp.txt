@@ -1,0 +1,97 @@
+* user order karega to admin mai jayega  -> SHIPPED
+* admin order assign karega courier ko -> CONFIRM
+* courier deliver karega user ko -> OUT_OF_DELIVERY -> DELIVER
+
+
+
+*************************UPDATED****************************
+Admin -> List<Dealers> -> List<Products>
+************************************************************
+
+1. Order -> shipped > 1. Dealer Account -->  List<String> shipped -> 1
+                      2. courier Account --> List<Sting>
+************************************************************
+1- Create Admin ->
+2- Create Dealer -> create Category Type, Create subCategory Type , Create Category, Create SubCategory <->Create Product
+3. Create Courier <-> User
+
+Note -> Category ya subcategory banate time tino ka dhyan rakhe categoryName, or category Type and categeoryId
+
+
+
+----------------ADD PRODUCT IN CATEGORY --------------------- pahale categoryType -> Category -> createProduct
+{
+  "userId": "",
+
+
+  "dealerId": "6851c5f749c5af611c5eeda2",
+  "categoryId": "68537018a6c4b53cb47af387",
+
+  "categoryType": "Electronics",
+  "selectedCategoryType": "Electronics",
+
+  "subCategoryId": "",
+  "selectedSubCategoryType": " ",
+
+
+  "price": 499.99,
+  "description": "This is an organic face serum that helps improve skin texture.",
+  "mainImageUrl": "https://res.cloudinary.com/demo/image/upload/v1620000000/sample.jpg",
+  "imageUrls": [],
+  "videoUrls": [],
+  "discount": 10.0,
+  "totalSold": 150,
+  "totalView": 1200,
+  "totalRating": 4.5,
+  "inBagQuantity": 1,
+  "howToUse": "Apply twice a day after cleansing your face.",
+  "keyIngredients": "Vitamin C, Hyaluronic Acid, Aloe Vera",
+  "about": "This product is suitable for all skin types.",
+  "overview": "Hydrating and lightweight serum with quick absorption.",
+  "stockStatus": true,
+  "codAvailable": true,
+  "sold": false,
+  "buyerUserList": []
+}
+
+-----------------CREATE SUB PRODUCT---------------------------
+
+{
+  "userId": "",
+
+
+  "dealerId": "6851c5f749c5af611c5eeda2",
+  "categoryId": "68537018a6c4b53cb47af387",
+
+  "categoryType": "Electronics",
+  "selectedCategoryType": "Electronics",
+
+  "subCategoryId": "68537281612090f8901348b4",
+  "selectedSubCategoryType": "Ear Phone",
+
+
+
+  "price": 499.99,
+  "description": "This is an organic face serum that helps improve skin texture.",
+  "mainImageUrl": "https://res.cloudinary.com/demo/image/upload/v1620000000/sample.jpg",
+  "imageUrls": [],
+  "videoUrls": [],
+  "discount": 10.0,
+  "totalSold": 150,
+  "totalView": 1200,
+  "totalRating": 4.5,
+  "inBagQuantity": 1,
+  "howToUse": "Apply twice a day after cleansing your face.",
+  "keyIngredients": "Vitamin C, Hyaluronic Acid, Aloe Vera",
+  "about": "This product is suitable for all skin types.",
+  "overview": "Hydrating and lightweight serum with quick absorption.",
+  "stockStatus": true,
+  "codAvailable": true,
+  "sold": false,
+  "buyerUserList": []
+}
+
+city ke base par order assign ho rahe hai courier ko or agar multiple courier same city ke hai to vo bad mai handle hoga
+
+user order karane ke bad
+-------> corier order ko confirm karega -> <orderConfirmApi> ----------> <orderOutOfDerliveryApi> ---> <orderedApi>
