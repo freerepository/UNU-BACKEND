@@ -1,18 +1,18 @@
-# Use Maven with Java 17
-FROM maven:3.8.6-openjdk-17 AS build
+# Stage 1: Build the application using Maven + Java 17
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
-# Copy everything and build the JAR
+# Copy all files and run build
 COPY . .
 RUN mvn clean package -DskipTests
 
-# Runtime image
-FROM openjdk:17-jdk-slim
+# Stage 2: Run the app using lightweight JDK image
+FROM eclipse-temurin:17-jdk
+
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
-# Expose port
 ENV PORT=8080
 EXPOSE 8080
 
