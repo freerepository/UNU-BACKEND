@@ -60,7 +60,7 @@ public class UsersController implements UsersServices{
             throw new UserNotFound("User Not Found");
         }
         Users user = users1.get();
-        if (!user.isBlock()){
+        if (user.isBlock()){ //true
             throw new RuntimeException("You're Block. Please contect with admin");
         }
         if (user.getUserMobile().equals(loginRequest.getUserMobile()) && user.getUserPassword().equals(loginRequest.getUserPassword())){

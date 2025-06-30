@@ -77,7 +77,7 @@ public class CourierController implements CourierService{
             throw new UserNotFound("Courier Not Found");
         }
         Courier courier = courier1.get();
-        if (!courier.isBlock()){
+        if (courier.isBlock()){
             throw new RuntimeException("You're Block. Please contect with admin");
         }
         if (courier.getCourierMobile().equals(loginRequest.getCourierMobile()) && courier.getCourierPassword().equals(loginRequest.getCourierPassword())){

@@ -96,7 +96,7 @@ public class DealerController implements DealerControllers {
             throw new UserNotFound("Dealer Not Found");
         }
         Dealer dealer = dealer1.get();
-        if (!dealer.isBlock()){
+        if (dealer.isBlock()){
             throw new RuntimeException("You'r blocked. Please contect with admin");
         }
         if (dealer.getDealerMobile().equals(loginRequest.getDealerMobile()) && dealer.getDealerPassword().equals(loginRequest.getDealerPassword())){
