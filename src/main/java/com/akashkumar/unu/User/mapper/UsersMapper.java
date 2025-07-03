@@ -10,10 +10,10 @@ public class UsersMapper {
     public static Users toEntity(UsersDto dto) {
         Users user = new Users();
         user.setUserId(dto.getUserId());
-        user.setUserName(dto.getUserName());
-        user.setUserEmail(dto.getUserEmail());
-        user.setUserMobile(dto.getUserMobile());
-        user.setUserPassword(dto.getUserPassword());
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setMobile(dto.getMobile());
+        user.setPassword(dto.getPassword());
         user.setRole(dto.getRole());
 
         user.setActive(dto.isActive());
@@ -37,10 +37,10 @@ public class UsersMapper {
     public static UsersDto toDto(Users entity) {
         UsersDto dto = new UsersDto();
         dto.setUserId(entity.getUserId());
-        dto.setUserName(entity.getUserName());
-        dto.setUserEmail(entity.getUserEmail());
-        dto.setUserMobile(entity.getUserMobile());
-        dto.setUserPassword(entity.getUserPassword());
+        dto.setName(entity.getName());
+        dto.setEmail(entity.getEmail());
+        dto.setMobile(entity.getMobile());
+        dto.setPassword(entity.getPassword());
         dto.setRole(entity.getRole());
 
         dto.setActive(entity.isActive());

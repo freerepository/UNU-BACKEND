@@ -10,10 +10,10 @@ import java.util.Optional;
 
 @Repository
 public interface CourierRepository extends MongoRepository<Courier, String> {
-    Optional<Courier> findByCourierMobile(String courierMobile);
+    Optional<Courier> findByMobile(String courierMobile);
     @Query("{ 'courierAddress.userCity': ?0 }")
     Optional<Courier> findByCourierCity(String courierCity);
     Optional<Courier> findByRole(Role role);
-    Optional<Courier> findByCourierEmail(String email);
+    Optional<Courier> findByEmail(String email);
     Optional<Courier> findByOtp(String token);
 }

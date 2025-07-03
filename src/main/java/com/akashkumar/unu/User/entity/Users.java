@@ -21,10 +21,10 @@ import java.util.List;
 public class Users {
     @Id
     private String userId;
-    private String userName;
-    private String userEmail;
-    private String userMobile;
-    private String userPassword;
+    private String name;
+    private String email;
+    private String mobile;
+    private String password;
     private Role role;
 
     private boolean active;

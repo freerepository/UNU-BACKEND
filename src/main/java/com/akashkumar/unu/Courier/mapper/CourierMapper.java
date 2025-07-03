@@ -9,14 +9,14 @@ public class CourierMapper {
             Courier courier = new Courier();
 
             courier.setCourierId(dto.getCourierId());
-            courier.setCourierName(dto.getCourierName());
-            courier.setCourierEmail(dto.getCourierEmail());
-            courier.setCourierMobile(dto.getCourierMobile());
+            courier.setName(dto.getName());
+            courier.setEmail(dto.getEmail());
+            courier.setMobile(dto.getMobile());
             courier.setAdharNumber(dto.getAdharNumber());
-            courier.setDealerName(dto.getDealerName());
+//            courier.setDealerName(dto.getDealerName());
             courier.setRole(dto.getRole());
             courier.setPanNumber(dto.getPanNumber());
-            courier.setCourierPassword(dto.getCourierPassword());
+            courier.setPassword(dto.getPassword());
 
             courier.setCourierCity(dto.getCourierCity());
 
@@ -45,14 +45,14 @@ public class CourierMapper {
             CourierDto dto = new CourierDto();
 
             dto.setCourierId(courier.getCourierId());
-            dto.setCourierName(courier.getCourierName());
-            dto.setCourierEmail(courier.getCourierEmail());
-            dto.setCourierMobile(courier.getCourierMobile());
+            dto.setName(courier.getName());
+            dto.setEmail(courier.getEmail());
+            dto.setMobile(courier.getMobile());
             dto.setAdharNumber(courier.getAdharNumber());
-            dto.setDealerName(courier.getDealerName());
+//            dto.setDealerName(courier.getDealerName());
             dto.setRole(courier.getRole());
             dto.setPanNumber(courier.getPanNumber());
-            dto.setCourierPassword(courier.getCourierPassword());
+            dto.setPassword(courier.getPassword());
 
             dto.setCourierCity(courier.getCourierCity());
 

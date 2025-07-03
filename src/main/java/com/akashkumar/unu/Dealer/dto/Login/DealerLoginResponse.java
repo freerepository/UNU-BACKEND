@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponse {
+public class DealerLoginResponse {
     private String dealerId;
-    private String dealerName;
-    private String dealerEmail;
-    private String dealerMobile;
-    private String dealerPassword;
+    private String name;
+    private String email;
+    private String mobile;
+    private String password;
     private Role role;
     private boolean active;
     private boolean block;

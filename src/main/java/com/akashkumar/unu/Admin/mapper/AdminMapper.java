@@ -7,10 +7,10 @@ public class AdminMapper {
     public static AdminDto toDto(Admin admin) {
         AdminDto dto = new AdminDto();
         dto.setAdminId(admin.getAdminId());
-        dto.setAdminName(admin.getAdminName());
-        dto.setAdminEmail(admin.getAdminEmail());
-        dto.setAdminMobile(admin.getAdminMobile());
-        dto.setAdminPassword(admin.getAdminPassword());
+        dto.setName(admin.getName());
+        dto.setEmail(admin.getEmail());
+        dto.setMobile(admin.getMobile());
+        dto.setPassword(admin.getPassword());
         dto.setTotalEarning(admin.getTotalEarning());
         dto.setRole(admin.getRole());
         dto.setBankDetail(admin.getBankDetail());
@@ -37,11 +37,12 @@ public class AdminMapper {
 
     public static Admin toEntity(AdminDto dto) {
         Admin admin = new Admin();
+
         admin.setAdminId(dto.getAdminId());
-        admin.setAdminName(dto.getAdminName());
-        admin.setAdminEmail(dto.getAdminEmail());
-        admin.setAdminMobile(dto.getAdminMobile());
-        admin.setAdminPassword(dto.getAdminPassword());
+        admin.setName(dto.getName());
+        admin.setEmail(dto.getEmail());
+        admin.setMobile(dto.getMobile());
+        admin.setPassword(dto.getPassword());
         admin.setTotalEarning(dto.getTotalEarning());
         admin.setRole(dto.getRole());
         admin.setBankDetail(dto.getBankDetail());

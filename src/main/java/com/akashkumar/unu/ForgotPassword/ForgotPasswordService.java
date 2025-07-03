@@ -40,7 +40,7 @@ public class ForgotPasswordService implements ForgotPasswordServices {
     public String requestToSendRestLink(Role role, String email) {
 
         if (role.equals(Role.ADMIN)){
-            Optional<Admin> checkAdmin = adminRepository.findByAdminEmail(email);
+            Optional<Admin> checkAdmin = adminRepository.findByEmail(email);
             if (checkAdmin.isPresent()){
                 Admin adminDetails = checkAdmin.get();
                 int otpGen = otpGenrator();
@@ -55,7 +55,7 @@ public class ForgotPasswordService implements ForgotPasswordServices {
             }
 
         }else if (role.equals(Role.COURIER)){
-            Optional<Courier> checkCourier = courierRepository.findByCourierEmail(email);
+            Optional<Courier> checkCourier = courierRepository.findByEmail(email);
             if (checkCourier.isPresent()){
                 Courier courierDetails = checkCourier.get();
                 int otpGen = otpGenrator();
@@ -69,7 +69,7 @@ public class ForgotPasswordService implements ForgotPasswordServices {
                 throw new UserNotFound("Courier Not Found");
             }
         }else if(role.equals(Role.DEALER)){
-            Optional<Dealer> checkDealer = dealerRepository.findByDealerEmail(email);
+            Optional<Dealer> checkDealer = dealerRepository.findByEmail(email);
             if (checkDealer.isPresent()){
                 Dealer dealerDetails = checkDealer.get();
                 int otpGen = otpGenrator();
@@ -84,7 +84,7 @@ public class ForgotPasswordService implements ForgotPasswordServices {
             }
         }else{
             //user
-            Optional<Users> checkUser = userRepository.findByUserEmail(email);
+            Optional<Users> checkUser = userRepository.findByEmail(email);
             if (checkUser.isPresent()){
                 Users userDetails = checkUser.get();
                 int otpGen = otpGenrator();
@@ -118,7 +118,7 @@ public class ForgotPasswordService implements ForgotPasswordServices {
             if (checkAdmin.isPresent()) {
                 Admin admin = checkAdmin.get();
                 if (admin.getOtpExpiry().after(new Date())) {
-                    admin.setAdminPassword(newPassword);
+                    admin.setPassword(newPassword);
                     admin.setOtp(null);
                     admin.setOtpExpiry(null);
                     adminRepository.save(admin);
@@ -135,7 +135,7 @@ public class ForgotPasswordService implements ForgotPasswordServices {
             if (checkCourier.isPresent()) {
                 Courier courier = checkCourier.get();
                 if (courier.getOtpExpiry().after(new Date())) {
-                    courier.setCourierPassword(newPassword);
+                    courier.setPassword(newPassword);
                     courier.setOtp(null);
                     courier.setOtpExpiry(null);
                     courierRepository.save(courier);
@@ -152,7 +152,7 @@ public class ForgotPasswordService implements ForgotPasswordServices {
             if (checkDealer.isPresent()) {
                 Dealer dealer = checkDealer.get();
                 if (dealer.getOtpExpiry().after(new Date())) {
-                    dealer.setDealerPassword(newPassword);
+                    dealer.setPassword(newPassword);
                     dealer.setOtp(null);
                     dealer.setOtpExpiry(null);
                     dealerRepository.save(dealer);
@@ -168,7 +168,7 @@ public class ForgotPasswordService implements ForgotPasswordServices {
             if (userOptional.isPresent()) {
                 Users user = userOptional.get();
                 if (user.getOtpExpiry().after(new Date())) {
-                    user.setUserPassword(newPassword);
+                    user.setPassword(newPassword);
                     user.setOtp(null);
                     user.setOtpExpiry(null);
                     userRepository.save(user);

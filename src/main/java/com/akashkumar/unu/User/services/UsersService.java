@@ -39,7 +39,7 @@ public class UsersService implements UsersServices{
     @Override
     public UsersDto createUser(UsersDto usersDto) {
         Optional<Admin> checkAdmin = adminRepository.findByRole(Role.ADMIN);
-        Optional<Users> checkUser = usersRepository.findByUserMobile(usersDto.getUserMobile());
+        Optional<Users> checkUser = usersRepository.findByMobile(usersDto.getMobile());
         if (checkAdmin.isEmpty()){
             throw new UserNotFound("Admin Not Found ");
         }
@@ -64,7 +64,7 @@ public class UsersService implements UsersServices{
 
     @Override
     public UsersDto addToCart(AddToCart addToCart) {
-        Optional<Dealer> checkDealer = dealerRepository.findByDealerId(addToCart.getDealerId());
+        Optional<Dealer> checkDealer = dealerRepository.findById(addToCart.getDealerId());
         Optional<Users> checkUser = usersRepository.findById(addToCart.getUserId());
         Optional<Product> checkProduct = productRepository.findById(addToCart.getProductId());
         if (checkDealer.isEmpty()){
@@ -146,7 +146,7 @@ public class UsersService implements UsersServices{
         user.getOrders().add(savedOrder.getOrderId());
         usersRepository.save(user);
 
-        Optional<Dealer> checkDealer = dealerRepository.findByDealerId(ordersDto.getDealerId());
+        Optional<Dealer> checkDealer = dealerRepository.findById(ordersDto.getDealerId());
         if (checkDealer.isEmpty()){
             throw new RuntimeException("Dealer Not Found ");
         }
@@ -176,66 +176,6 @@ public class UsersService implements UsersServices{
         dealerRepository.save(dealer);
         return OrderMapper.toOrderDto(savedOrder);
     }
-
-
-
-//    @Override
-//    public OrdersDto createOrder(String productId,/*user id dto mai aa rahi hai*/ OrdersDto ordersDto) {
-//        Optional<Users> checkUser = usersRepository.findById(ordersDto.getUserId());
-//        Optional<Dealer> checkDealer = dealerRepository.findById(ordersDto.getDealerId());
-//        if (checkDealer.isEmpty()){
-//            throw new UserNotFound("Dealer Not Founding");
-//        }
-//
-//        if (checkUser.isEmpty()){
-//            throw new UserNotFound("User Not Founding");
-//        }
-//        //check if address is available of not
-//        Users users = checkUser.get();
-//        if (!users.isCheckAddress()){
-//            throw new RuntimeException("Address Not found");
-//        }
-//
-//        Optional<Product> checkProduct = productRepository.findById(productId);
-//        if (checkProduct.isEmpty()){
-//            throw new RuntimeException("Product Not Found ");
-//        }
-//
-//        Product product = checkProduct.get();
-//        Orders orders = OrderMapper.toOrderEntity(ordersDto);
-//        //is cod available or not
-//        if (product.isCodAvailable()){
-//            //cod available
-//            //assign order on the base of address
-//            orders.setOrderStatus(OrderStatus.SHIPPED);
-//            Orders savedOrder = orderRepository.save(orders);
-//
-//            users.getCarts().clear();
-//            usersRepository.save(users);
-//
-//            //assign order to courier based on address
-//            Optional<Courier> checkCourier = courierRepository.findByCourierCity(users.getAddress().getUserCity());
-//            if (checkCourier.isEmpty()){
-//                throw new RuntimeException("Courier Not Found : Pending ");
-//            }
-//
-//            Courier courier = checkCourier.get();
-//            courier.getOrdersList().add(savedOrder.getOrderId());
-//            courierRepository.save(courier);
-//
-//            Dealer dealer = checkDealer.get();
-//            dealer.getShippedOrdersIds().add(orders.getOrderId());
-//            dealerRepository.save(dealer);
-//
-//        }else{
-//            //online deliver
-//            throw new RuntimeException("COD IS NOT AVAILABLE : GO FOR ONLINE PAY");
-//        }
-//        //Store in Courier
-//
-//        return OrderMapper.toOrderDto(orders);
-//    }
-
 }
 interface UsersServices{
     UsersDto createUser(UsersDto usersDto);

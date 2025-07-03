@@ -22,6 +22,7 @@ import com.akashkumar.unu.User.entity.Users;
 import com.akashkumar.unu.User.mapper.UsersMapper;
 import com.akashkumar.unu.User.repository.UsersRepository;
 import com.akashkumar.unu.Utilities.Enums.Role;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,33 +44,35 @@ public class AdminController implements AdminResponse {
     @Autowired UsersRepository usersRepository;
     @Autowired DealerRepository dealerRepository;
 
-
-
     @Override
     @PostMapping("/register")
     public ResponseEntity<?> registerAdmin(AdminDto adminDto) {
-            AdminDto savedAdmin = adminServices.registerAdmin(adminDto);
-            ApiResponse<AdminDto> response = new ApiResponse<AdminDto>("Admin Register Successfully", savedAdmin);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            if (adminDto.getRole().equals(Role.ADMIN)){
+                AdminDto savedAdmin = adminServices.registerAdmin(adminDto);
+                ApiResponse<AdminDto> response = new ApiResponse<AdminDto>("Admin Register Successfully", savedAdmin);
+                return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+            }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something went wrong");
 
     }
 
     @Override
     @PostMapping("/login")
     public ResponseEntity<?> loginAccount(LoginRequest loginRequest) {
-        Optional<Admin> checkAdmin = adminRepository.findByAdminMobile(loginRequest.getAdminMobile());
+        Optional<Admin> checkAdmin = adminRepository.findByMobile(loginRequest.getMobile());
         if (checkAdmin.isEmpty()){
             ApiResponse<LoginRequest> response = new ApiResponse<>("User Not Found", loginRequest);
             return ResponseEntity.status(404).body(response);
         }
         Admin getAdminData = checkAdmin.get();
-        if(getAdminData.getAdminMobile().equals(loginRequest.getAdminMobile()) && getAdminData.getAdminPassword().equals(loginRequest.getAdminPassword())){
+        if(getAdminData.getMobile().equals(loginRequest.getMobile()) && getAdminData.getPassword().equals(loginRequest.getPassword())){
 
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setAdminId(getAdminData.getAdminId());
-            loginResponse.setAdminName(getAdminData.getAdminName());
-            loginResponse.setAdminEmail(getAdminData.getAdminEmail());
-            loginResponse.setAdminMobile(getAdminData.getAdminMobile());
+            loginResponse.setName(getAdminData.getName());
+            loginResponse.setEmail(getAdminData.getEmail());
+            loginResponse.setMobile(getAdminData.getMobile());
             loginResponse.setRole(getAdminData.getRole());
 
             // ✅ Return only selected fields
@@ -100,7 +103,7 @@ public class AdminController implements AdminResponse {
     @PutMapping("/blockDealer")
     public ResponseEntity<?> blockDealer(@RequestBody BlockDealerRequest request) {
         Optional<Admin> checkAdmin = adminRepository.findByRole(Role.ADMIN);
-        Optional<Dealer> checkDealer = dealerRepository.findByDealerId(request.getDealerId());
+        Optional<Dealer> checkDealer = dealerRepository.findById(request.getDealerId());
 
         if (checkAdmin.isEmpty()) {
             throw new RuntimeException("Admin not found");
@@ -226,7 +229,7 @@ public class AdminController implements AdminResponse {
         List<DealerDto> dealerList = new ArrayList<>();
 
         for (String ids : admin.getDealers()){
-            Optional<Dealer> dealer = dealerRepository.findByDealerId(ids);
+            Optional<Dealer> dealer = dealerRepository.findById(ids);
             if (dealer.isEmpty()){
                 throw new RuntimeException("Dealer Not Found");
             }
@@ -251,7 +254,7 @@ public class AdminController implements AdminResponse {
         List<DealerDto> dealerList = new ArrayList<>();
 
         for (String ids : admin.getBlockedDealer()){
-            Optional<Dealer> dealer = dealerRepository.findByDealerId(ids);
+            Optional<Dealer> dealer = dealerRepository.findById(ids);
             if (dealer.isEmpty()){
                 throw new RuntimeException("Dealer Not Found");
             }
@@ -367,7 +370,7 @@ public class AdminController implements AdminResponse {
     }
 }
 interface AdminResponse {
-    ResponseEntity<?> registerAdmin(@RequestBody AdminDto adminDto);
+    ResponseEntity<?> registerAdmin(@Valid @RequestBody AdminDto adminDto);
     ResponseEntity<?> loginAccount(@RequestBody LoginRequest loginRequest);
     ResponseEntity<?> blockDealer(@RequestBody BlockDealerRequest request);
     ResponseEntity<?> blockCourier(@RequestBody BlockDealerRequest request);
@@ -381,9 +384,4 @@ interface AdminResponse {
 
     ResponseEntity<?> getAllCourier();
     ResponseEntity<?> getAllBlockCourier();
-
-
-
-
-
 }

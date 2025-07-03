@@ -1,4 +1,4 @@
-package com.akashkumar.unu.Dealer.dto.Login;
+package com.akashkumar.unu.Authentication.Login;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

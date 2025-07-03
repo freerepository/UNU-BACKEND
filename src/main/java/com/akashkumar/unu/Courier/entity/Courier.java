@@ -21,14 +21,15 @@ import java.util.List;
 public class Courier {
     @Id
     private String courierId;
-    private String courierName;
-    private String courierEmail;
-    private String courierMobile;
+    private String name;
+    private String email;
+    private String mobile;
+    private String password;
+
     private String adharNumber;
-    private String dealerName;
+//    private String dealerName;
     private Role role;
     private String panNumber;
-    private String courierPassword;
 
     private String courierCity;
 

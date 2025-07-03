@@ -20,10 +20,10 @@ import java.util.List;
 public class Admin {
     @Id
     private String adminId;
-    private String adminName;
-    private String adminEmail;
-    private String adminMobile;
-    private String adminPassword;
+    private String name;
+    private String email;
+    private String mobile;
+    private String password;
     private double totalEarning;
     private Role role;
     private Bank bankDetail;

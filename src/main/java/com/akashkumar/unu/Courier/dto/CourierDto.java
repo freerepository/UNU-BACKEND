@@ -3,6 +3,7 @@ package com.akashkumar.unu.Courier.dto;
 import com.akashkumar.unu.Bank.Bank;
 import com.akashkumar.unu.Address.MyAddress;
 import com.akashkumar.unu.Utilities.Enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,14 +15,15 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = false)
 public class CourierDto {
     private String courierId;
-    private String courierName;
-    private String courierEmail;
-    private String courierMobile;
-    private String courierPassword;
+    private String name;
+    private String email;
+    private String mobile;
+    private String password;
     private String adharNumber;
-    private String dealerName;
+//    private String dealerName;
     private Role role;
     private String panNumber;
     private String courierCity;

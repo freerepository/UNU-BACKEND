@@ -8,13 +8,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponse {
+public class CourierLoginResponse {
     private String courierId;
-    private String courierName;
-    private String courierEmail;
-    private String courierMobile;
-    private String courierPassword;
-    private String dealerName;
+    private String name;
+    private String email;
+    private String mobile;
+    private String password;
+
+//    private String dealerName; // dealer name nahi rahega
+
     private Role role;
 
     private double totalEarning;

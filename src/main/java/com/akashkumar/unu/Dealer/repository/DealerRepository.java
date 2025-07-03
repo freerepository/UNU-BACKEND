@@ -9,9 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface DealerRepository extends MongoRepository<Dealer, String> {
-    Optional<Dealer> findByDealerMobile(String dealerMobile);
-    Optional<Dealer> findByDealerId(String dealerMobile);
-    Optional<Dealer> findByDealerEmail(String dealerEmail);
+    Optional<Dealer> findByMobile(String dealerMobile);
+    Optional<Dealer> findById(String dealerMobile);
+    Optional<Dealer> findByEmail(String dealerEmail);
     Optional<Dealer> findByRole(Role role);
     Optional<Dealer> findByOtp(String token);
 }

@@ -8,6 +8,7 @@ import com.akashkumar.unu.ExceptionHandling.CategoryException.CategoryNotFound;
 import com.akashkumar.unu.ExceptionHandling.Dto.ExceptionResponseDto;
 import com.akashkumar.unu.ExceptionHandling.Products.OrderNotFound;
 import com.akashkumar.unu.ExceptionHandling.Products.ProductNotFound;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -77,5 +78,9 @@ public class GlobalExceptionHandle {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponseDto);
     }
 
-
+    @ExceptionHandler(UnrecognizedPropertyException.class)
+    public ResponseEntity<?> handleUnknownProperty(UnrecognizedPropertyException ex, WebRequest webRequest) {
+        ExceptionResponseDto exceptionResponseDto = new ExceptionResponseDto(webRequest.getDescription(false), HttpStatus.BAD_REQUEST, ex.getPropertyName(), LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponseDto);
+    }
 }

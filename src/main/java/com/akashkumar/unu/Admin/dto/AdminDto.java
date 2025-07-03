@@ -2,6 +2,7 @@ package com.akashkumar.unu.Admin.dto;
 
 import com.akashkumar.unu.Bank.Bank;
 import com.akashkumar.unu.Utilities.Enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,12 +14,13 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = false)
 public class AdminDto {
     private String adminId;
-    private String adminName;
-    private String adminEmail;
-    private String adminMobile;
-    private String adminPassword;
+    private String name;
+    private String email;
+    private String mobile;
+    private String password;
     private double totalEarning;
     private Role role;
     private Bank bankDetail;

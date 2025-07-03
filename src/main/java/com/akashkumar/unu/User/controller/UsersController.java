@@ -11,7 +11,7 @@ import com.akashkumar.unu.Product.Products.ProductRepository;
 import com.akashkumar.unu.User.dto.AddToCart;
 import com.akashkumar.unu.User.dto.AddToCartResponse;
 import com.akashkumar.unu.User.dto.Login.LoginRequest;
-import com.akashkumar.unu.User.dto.Login.LoginResponse;
+import com.akashkumar.unu.User.dto.Login.UserLoginResponse;
 import com.akashkumar.unu.User.dto.UsersDto;
 import com.akashkumar.unu.User.entity.Users;
 import com.akashkumar.unu.User.repository.UsersRepository;
@@ -51,11 +51,10 @@ public class UsersController implements UsersServices{
         ApiResponse<UsersDto> apiResponse = new ApiResponse<>("User Created Successfully ", usersDto1);
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
-
     @Override
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(LoginRequest loginRequest) {
-        Optional<Users> users1 = usersRepository.findByUserMobile(loginRequest.getUserMobile());
+        Optional<Users> users1 = usersRepository.findByMobile(loginRequest.getMobile());
         if (users1.isEmpty()){
             throw new UserNotFound("User Not Found");
         }
@@ -63,9 +62,9 @@ public class UsersController implements UsersServices{
         if (user.isBlock()){ //true
             throw new RuntimeException("You're Block. Please contect with admin");
         }
-        if (user.getUserMobile().equals(loginRequest.getUserMobile()) && user.getUserPassword().equals(loginRequest.getUserPassword())){
-            LoginResponse loginResponse = getLoginResponse(user);
-            ApiResponse<LoginResponse> loginResponseApiResponse = new ApiResponse<>("User Login Successfully ", loginResponse);
+        if (user.getMobile().equals(loginRequest.getMobile()) && user.getPassword().equals(loginRequest.getPassword())){
+            UserLoginResponse userLoginResponse = getLoginResponse(user);
+            ApiResponse<UserLoginResponse> loginResponseApiResponse = new ApiResponse<>("User Login Successfully ", userLoginResponse);
             return ResponseEntity.status(HttpStatus.OK).body(loginResponseApiResponse);
         }else {
             throw new RuntimeException("Something went wrong");
@@ -159,21 +158,21 @@ public class UsersController implements UsersServices{
     }
 
 
-    private static LoginResponse getLoginResponse(Users users) {
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setUserId(users.getUserId());
+    private static UserLoginResponse getLoginResponse(Users users) {
+        UserLoginResponse userLoginResponse = new UserLoginResponse();
+        userLoginResponse.setUserId(users.getUserId());
 
-        loginResponse.setUserName(users.getUserName());
-        loginResponse.setUserEmail(users.getUserEmail());
-        loginResponse.setUserPassword(users.getUserPassword());
-        loginResponse.setUserMobile(users.getUserMobile());
-        loginResponse.setRole(users.getRole());
-        loginResponse.setTotalSpend(users.getTotalSpend());
-        loginResponse.setActive(users.isActive());
-        loginResponse.setBlock(users.isBlock());
-        loginResponse.setCheckBank(users.isCheckBank());
-        loginResponse.setCheckAddress(users.isCheckAddress());
-        return loginResponse;
+        userLoginResponse.setName(users.getName());
+        userLoginResponse.setEmail(users.getEmail());
+        userLoginResponse.setPassword(users.getPassword());
+        userLoginResponse.setMobile(users.getMobile());
+        userLoginResponse.setRole(users.getRole());
+        userLoginResponse.setTotalSpend(users.getTotalSpend());
+        userLoginResponse.setActive(users.isActive());
+        userLoginResponse.setBlock(users.isBlock());
+        userLoginResponse.setCheckBank(users.isCheckBank());
+        userLoginResponse.setCheckAddress(users.isCheckAddress());
+        return userLoginResponse;
     }
 }
 interface UsersServices{

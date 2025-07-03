@@ -25,7 +25,7 @@ public class CourierServices implements CourierService{
     @Override
     public CourierDto createCourier(CourierDto courierDto) {
         Optional<Admin> checkAdmin = adminRepository.findByRole(Role.ADMIN);
-        Optional<Courier> checkCourier = courierRepository.findByCourierMobile(courierDto.getCourierMobile());
+        Optional<Courier> checkCourier = courierRepository.findByMobile(courierDto.getMobile());
         if (checkAdmin.isEmpty()){
             throw new UserNotFound("Admin Not Found ");
         }

@@ -25,7 +25,7 @@ public class AdminService implements AdminServices {
         //check other one have to submit with Role of Admin
         Optional<Admin> admins = adminRepository.findByRole(Role.ADMIN);
         if (admins.isPresent()) {
-            throw new UserAlreadyExistException("Admin Already Exist with the name of "+adminDto.getAdminName());
+            throw new UserAlreadyExistException("Admin Already Exist with the name of "+adminDto.getName());
         }
         if (adminDto.getBankDetail() != null) {
             Bank bank = adminDto.getBankDetail();

@@ -21,10 +21,10 @@ import java.util.List;
 public class Dealer {
     @Id
     private String dealerId;
-    private String dealerName;
-    private String dealerEmail;
-    private String dealerMobile;
-    private String dealerPassword;
+    private String name;
+    private String email;
+    private String mobile;
+    private String password;
     private Role role;
 
     private Bank bankDetail;

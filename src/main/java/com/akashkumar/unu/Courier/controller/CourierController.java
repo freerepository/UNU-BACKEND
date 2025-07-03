@@ -5,7 +5,7 @@ import com.akashkumar.unu.Admin.repository.AdminRepository;
 import com.akashkumar.unu.Courier.dto.ChangeOrderStatus;
 import com.akashkumar.unu.Courier.dto.CourierDto;
 import com.akashkumar.unu.Courier.dto.Login.LoginRequest;
-import com.akashkumar.unu.Courier.dto.Login.LoginResponse;
+import com.akashkumar.unu.Courier.dto.Login.CourierLoginResponse;
 import com.akashkumar.unu.Courier.entity.Courier;
 import com.akashkumar.unu.Courier.repository.CourierRepository;
 import com.akashkumar.unu.Courier.services.CourierServices;
@@ -60,6 +60,8 @@ public class CourierController implements CourierService{
     @Autowired
     ProductRepository productRepository;
 
+
+
     @Override
     @PostMapping("/register")
     public ResponseEntity<?> createCourier(CourierDto courierDto) {
@@ -72,7 +74,7 @@ public class CourierController implements CourierService{
     @Override
     @PostMapping("/login")
     public ResponseEntity<?> loginCourier(LoginRequest loginRequest) {
-        Optional<Courier> courier1 = courierRepository.findByCourierMobile(loginRequest.getCourierMobile());
+        Optional<Courier> courier1 = courierRepository.findByMobile(loginRequest.getMobile());
         if (courier1.isEmpty()){
             throw new UserNotFound("Courier Not Found");
         }
@@ -80,9 +82,9 @@ public class CourierController implements CourierService{
         if (courier.isBlock()){
             throw new RuntimeException("You're Block. Please contect with admin");
         }
-        if (courier.getCourierMobile().equals(loginRequest.getCourierMobile()) && courier.getCourierPassword().equals(loginRequest.getCourierPassword())){
-            LoginResponse loginResponse = getLoginResponse(courier);
-            ApiResponse<LoginResponse> loginResponseApiResponse = new ApiResponse<>("Courier Login Successfully ", loginResponse);
+        if (courier.getMobile().equals(loginRequest.getMobile()) && courier.getPassword().equals(loginRequest.getPassword())){
+            CourierLoginResponse courierLoginResponse = getLoginResponse(courier);
+            ApiResponse<CourierLoginResponse> loginResponseApiResponse = new ApiResponse<>("Courier Login Successfully ", courierLoginResponse);
             return ResponseEntity.status(HttpStatus.OK).body(loginResponseApiResponse);
         }else {
             throw new RuntimeException("Something went wrong");
@@ -106,7 +108,7 @@ public class CourierController implements CourierService{
     @Override
     @PostMapping("/changeOrderStatus")
     public ResponseEntity<?> changeStatus(ChangeOrderStatus changeOrderStatus) {
-        Optional<Dealer> checkDealer = dealerRepository.findByDealerId(changeOrderStatus.getDealerId());
+        Optional<Dealer> checkDealer = dealerRepository.findById(changeOrderStatus.getDealerId());
         Optional<Courier> checkCourier = courierRepository.findById(changeOrderStatus.getCourierId());
         Optional<Users> checkUser = usersRepository.findById(changeOrderStatus.getUserId());
         Optional<Orders> checkOrder = orderRepository.findByOrderId(changeOrderStatus.getOrderId());
@@ -229,21 +231,21 @@ public class CourierController implements CourierService{
         }
     }
 
-    private static LoginResponse getLoginResponse(Courier courier) {
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setCourierId(courier.getCourierId());
-        loginResponse.setCourierName(courier.getCourierName());
-        loginResponse.setCourierEmail(courier.getCourierEmail());
-        loginResponse.setCourierMobile(courier.getCourierMobile());
-        loginResponse.setCourierPassword(courier.getCourierPassword());
-        loginResponse.setDealerName(courier.getDealerName());
-        loginResponse.setRole(courier.getRole());
-        loginResponse.setTotalEarning(courier.getTotalEarning());
-        loginResponse.setActive(courier.isActive());
-        loginResponse.setBlock(courier.isBlock());
-        loginResponse.setCheckBank(courier.isCheckBank());
-        loginResponse.setCheckAddress(courier.isCheckAddress());
-        return loginResponse;
+    private static CourierLoginResponse getLoginResponse(Courier courier) {
+        CourierLoginResponse courierLoginResponse = new CourierLoginResponse();
+        courierLoginResponse.setCourierId(courier.getCourierId());
+        courierLoginResponse.setName(courier.getName());
+        courierLoginResponse.setEmail(courier.getEmail());
+        courierLoginResponse.setEmail(courier.getMobile());
+        courierLoginResponse.setPassword(courier.getPassword());
+//        courierLoginResponse.setDealerName(courier.getDealerName());
+        courierLoginResponse.setRole(courier.getRole());
+        courierLoginResponse.setTotalEarning(courier.getTotalEarning());
+        courierLoginResponse.setActive(courier.isActive());
+        courierLoginResponse.setBlock(courier.isBlock());
+        courierLoginResponse.setCheckBank(courier.isCheckBank());
+        courierLoginResponse.setCheckAddress(courier.isCheckAddress());
+        return courierLoginResponse;
     }
 }
 interface CourierService{

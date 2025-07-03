@@ -66,7 +66,7 @@ public class DealerService implements DealerServices{
     @Override
     public DealerDto registerDealerAccount(DealerDto dto) {
         Optional<Admin> checkAdmin = adminRepository.findByRole(Role.ADMIN);
-        Optional<Dealer> checkDealer = dealerRepository.findByDealerMobile(dto.getDealerMobile());
+        Optional<Dealer> checkDealer = dealerRepository.findByMobile(dto.getMobile());
         if (checkAdmin.isEmpty()){
             throw new UserNotFound("Admin Not Found ");
         }
@@ -91,7 +91,7 @@ public class DealerService implements DealerServices{
 
     @Override
     public ProductDto createProduct(ProductDto productDto, MultipartFile multipartFile) throws IOException {
-        Optional<Dealer> checkDealer = dealerRepository.findByDealerId(productDto.getDealerId());
+        Optional<Dealer> checkDealer = dealerRepository.findById(productDto.getDealerId());
         if (checkDealer.isEmpty()){
             throw new UserNotFound("Dealer Not Found ");
         }
@@ -144,7 +144,7 @@ public class DealerService implements DealerServices{
             image.setSubCategoryId("");
             image.setProductId(product.getProductId());
             imagesRepository.save(image);
- ;
+
             Product saveProductsInDealer =  productRepository.save(product);
 
             Dealer dealer = checkDealer.get();
@@ -157,7 +157,7 @@ public class DealerService implements DealerServices{
 
     @Override
     public CategoryDto createCategory(CategoryDto categoryDto) {
-         Optional<Dealer> checkDealer = dealerRepository.findByDealerId(categoryDto.getDealerId());
+         Optional<Dealer> checkDealer = dealerRepository.findById(categoryDto.getDealerId());
          if (checkDealer.isEmpty()){
              throw new UserNotFound("Dealer Not Found in Database ");
          }
@@ -179,7 +179,7 @@ public class DealerService implements DealerServices{
 
     @Override
     public SubCategoryDto subCreateCategory(SubCategoryDto subCategoryDto) {
-        Optional<Dealer> checkDealer = dealerRepository.findByDealerId(subCategoryDto.getDealerId());
+        Optional<Dealer> checkDealer = dealerRepository.findById(subCategoryDto.getDealerId());
         if (checkDealer.isEmpty()){
             throw new UserNotFound("Dealer Not Found in Database ");
         }

@@ -3,6 +3,7 @@ package com.akashkumar.unu.Dealer.dto;
 import com.akashkumar.unu.Bank.Bank;
 import com.akashkumar.unu.Address.MyAddress;
 import com.akashkumar.unu.Utilities.Enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,12 +15,13 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = false)
 public class DealerDto {
     private String dealerId;
-    private String dealerName;
-    private String dealerEmail;
-    private String dealerMobile;
-    private String dealerPassword;
+    private String name;
+    private String email;
+    private String mobile;
+    private String password;
     private Role role;
     private Bank bankDetail;
     private boolean active;

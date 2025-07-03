@@ -3,7 +3,7 @@ package com.akashkumar.unu.Dealer.controller;
 import com.akashkumar.unu.Admin.repository.AdminRepository;
 import com.akashkumar.unu.Dealer.dto.DealerDto;
 import com.akashkumar.unu.Dealer.dto.Login.LoginRequest;
-import com.akashkumar.unu.Dealer.dto.Login.LoginResponse;
+import com.akashkumar.unu.Dealer.dto.Login.DealerLoginResponse;
 import com.akashkumar.unu.Dealer.entity.Dealer;
 import com.akashkumar.unu.Dealer.repository.DealerRepository;
 import com.akashkumar.unu.Dealer.services.DealerService;
@@ -91,7 +91,7 @@ public class DealerController implements DealerControllers {
     @Override
     @PostMapping("/login")
     public ResponseEntity<?> loginDealerAccount(LoginRequest loginRequest) {
-        Optional<Dealer> dealer1 = dealerRepository.findByDealerMobile(loginRequest.getDealerMobile());
+        Optional<Dealer> dealer1 = dealerRepository.findByMobile(loginRequest.getMobile());
         if (dealer1.isEmpty()){
             throw new UserNotFound("Dealer Not Found");
         }
@@ -99,9 +99,9 @@ public class DealerController implements DealerControllers {
         if (dealer.isBlock()){
             throw new RuntimeException("You'r blocked. Please contect with admin");
         }
-        if (dealer.getDealerMobile().equals(loginRequest.getDealerMobile()) && dealer.getDealerPassword().equals(loginRequest.getDealerPassword())){
-            LoginResponse loginResponse = getLoginResponse(dealer);
-            ApiResponse<LoginResponse> loginResponseApiResponse = new ApiResponse<>("Dealer Login Successfully ", loginResponse);
+        if (dealer.getMobile().equals(loginRequest.getMobile()) && dealer.getPassword().equals(loginRequest.getPassword())){
+            DealerLoginResponse dealerLoginResponse = getLoginResponse(dealer);
+            ApiResponse<DealerLoginResponse> loginResponseApiResponse = new ApiResponse<>("Dealer Login Successfully ", dealerLoginResponse);
             return ResponseEntity.status(HttpStatus.OK).body(loginResponseApiResponse);
         }else {
             throw new RuntimeException("Something went wrong");
@@ -243,7 +243,7 @@ public class DealerController implements DealerControllers {
     @Override
     @PostMapping("/create-categoryType")
     public ResponseEntity<?> createCategoryType(CategoryType categoryType) {
-        Optional<Dealer> checkDealer = dealerRepository.findByDealerId(categoryType.getDealerId());
+        Optional<Dealer> checkDealer = dealerRepository.findById(categoryType.getDealerId());
         if (checkDealer.isEmpty()){
             throw new UserNotFound("Dealer not found ");
         }
@@ -265,7 +265,7 @@ public class DealerController implements DealerControllers {
     @PostMapping("/remove-categoryType")
     public ResponseEntity<?> removeCategoryType(RemoveCategoryType categoryType) {
         Optional<CategoryType> checkCategoryType = categoryTypeRepository.findById(categoryType.getCategoryTypeId());
-        Optional<Dealer> checkDealer = dealerRepository.findByDealerId(categoryType.getDealerId());
+        Optional<Dealer> checkDealer = dealerRepository.findById(categoryType.getDealerId());
 
         if (checkCategoryType.isEmpty()){
             throw new RuntimeException("Category Type Not Found ");
@@ -287,7 +287,7 @@ public class DealerController implements DealerControllers {
     @PutMapping("/update-categoryType")
     public ResponseEntity<?> updateCategoryType(UpdateCategoryType categoryType) {
         Optional<CategoryType> checkCategoryType = categoryTypeRepository.findById(categoryType.getCategoryTypeId());
-        Optional<Dealer> checkDealer = dealerRepository.findByDealerId(categoryType.getDealerId());
+        Optional<Dealer> checkDealer = dealerRepository.findById(categoryType.getDealerId());
 
         if (checkCategoryType.isEmpty()){
             throw new RuntimeException("Category Type Not Found ");
@@ -306,7 +306,7 @@ public class DealerController implements DealerControllers {
     @Override
     @PostMapping("/create-subCategoryType")
     public ResponseEntity<?> createSubCategoryType(SubCategoryType subCategoryType) {
-        Optional<Dealer> checkDealer = dealerRepository.findByDealerId(subCategoryType.getDealerId());
+        Optional<Dealer> checkDealer = dealerRepository.findById(subCategoryType.getDealerId());
         Optional<CategoryType> checkCategoryType = categoryTypeRepository.findById(subCategoryType.getCategoryTypeId());
         Optional<SubCategoryType> checkSubCategoryType = subCategoryTypeRepository.findBySubCategoryType(subCategoryType.getSubCategoryType());
 
@@ -338,7 +338,7 @@ public class DealerController implements DealerControllers {
     @Override
     @PostMapping("/remove-subCategoryType")
     public ResponseEntity<?> removeSubCategoryType(SubCategoryType subCategoryType) {
-        Optional<Dealer> checkDealer = dealerRepository.findByDealerId(subCategoryType.getDealerId());
+        Optional<Dealer> checkDealer = dealerRepository.findById(subCategoryType.getDealerId());
         Optional<CategoryType> checkCategoryType = categoryTypeRepository.findById(subCategoryType.getCategoryTypeId());
         Optional<SubCategoryType> checkSubCategoryType = subCategoryTypeRepository.findBySubCategoryType(subCategoryType.getSubCategoryType());
 
@@ -370,7 +370,7 @@ public class DealerController implements DealerControllers {
     @Override
     @PutMapping("/update-subCategoryType")
     public ResponseEntity<?> updateSubCategoryType(UpdateSubCategoryType subCategoryType) {
-        Optional<Dealer> checkDealer = dealerRepository.findByDealerId(subCategoryType.getDealerId());
+        Optional<Dealer> checkDealer = dealerRepository.findById(subCategoryType.getDealerId());
         Optional<CategoryType> checkCategoryType = categoryTypeRepository.findById(subCategoryType.getCategoryTypeId());
         Optional<SubCategoryType> checkSubCategoryType = subCategoryTypeRepository.findBySubCategoryType(subCategoryType.getSubCategoryType());
 
@@ -398,20 +398,20 @@ public class DealerController implements DealerControllers {
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
 
-    private static LoginResponse getLoginResponse(Dealer dealer) {
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setDealerId(dealer.getDealerId());
-        loginResponse.setDealerName(dealer.getDealerName());
-        loginResponse.setDealerEmail(dealer.getDealerEmail());
-        loginResponse.setDealerMobile(dealer.getDealerMobile());
-        loginResponse.setDealerPassword(dealer.getDealerPassword());
-        loginResponse.setRole(dealer.getRole());
-        loginResponse.setTotalEarning(dealer.getTotalEarning());
-        loginResponse.setActive(dealer.isActive());
-        loginResponse.setBlock(dealer.isBlock());
-        loginResponse.setCheckBank(dealer.isCheckBank());
-        loginResponse.setCheckAddress(dealer.isCheckAddress());
-        return loginResponse;
+    private static DealerLoginResponse getLoginResponse(Dealer dealer) {
+        DealerLoginResponse dealerLoginResponse = new DealerLoginResponse();
+        dealerLoginResponse.setDealerId(dealer.getDealerId());
+        dealerLoginResponse.setName(dealer.getName());
+        dealerLoginResponse.setEmail(dealer.getEmail());
+        dealerLoginResponse.setMobile(dealer.getMobile());
+        dealerLoginResponse.setPassword(dealer.getPassword());
+        dealerLoginResponse.setRole(dealer.getRole());
+        dealerLoginResponse.setTotalEarning(dealer.getTotalEarning());
+        dealerLoginResponse.setActive(dealer.isActive());
+        dealerLoginResponse.setBlock(dealer.isBlock());
+        dealerLoginResponse.setCheckBank(dealer.isCheckBank());
+        dealerLoginResponse.setCheckAddress(dealer.isCheckAddress());
+        return dealerLoginResponse;
     }
     @Override
     @PostMapping(value = "/create-product", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -435,7 +435,7 @@ public class DealerController implements DealerControllers {
     public ResponseEntity<?> removeProduct(RemoveProduct removeProduct) {
         Optional<Product> checkProduct = productRepository.findById(removeProduct.getProductId());
         Optional<Users> checkUsers = usersRepository.findById(removeProduct.getUserId());
-        Optional<Dealer> checkDealer = dealerRepository.findByDealerId(removeProduct.getDealerId());
+        Optional<Dealer> checkDealer = dealerRepository.findById(removeProduct.getDealerId());
         if (checkProduct.isEmpty()){
             throw new RuntimeException("Product Not Found ");
         }
@@ -465,7 +465,7 @@ public class DealerController implements DealerControllers {
     @PutMapping("/update-product")
     public ResponseEntity<?> updateProduct(UpdateProductDto updatedValues) {
         Optional<Product> checkProduct = productRepository.findById(updatedValues.getProductId());
-        Optional<Dealer> checkDealer = dealerRepository.findByDealerId(updatedValues.getDealerId());
+        Optional<Dealer> checkDealer = dealerRepository.findById(updatedValues.getDealerId());
         if (checkProduct.isEmpty()){
             throw new UserNotFound("Product Not Found ");
         }

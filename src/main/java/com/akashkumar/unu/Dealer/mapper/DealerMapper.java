@@ -8,10 +8,10 @@ public class DealerMapper {
     public static DealerDto toDto(Dealer dealer) {
         DealerDto dto = new DealerDto();
         dto.setDealerId(dealer.getDealerId());
-        dto.setDealerName(dealer.getDealerName());
-        dto.setDealerEmail(dealer.getDealerEmail());
-        dto.setDealerMobile(dealer.getDealerMobile());
-        dto.setDealerPassword(dealer.getDealerPassword());
+        dto.setName(dealer.getName());
+        dto.setEmail(dealer.getEmail());
+        dto.setMobile(dealer.getMobile());
+        dto.setPassword(dealer.getPassword());
         dto.setRole(dealer.getRole());
         dto.setBankDetail(dealer.getBankDetail());
         dto.setMyAddress(dealer.getMyAddress());
@@ -41,10 +41,10 @@ public class DealerMapper {
     public static Dealer toEntity(DealerDto dto) {
         Dealer dealer = new Dealer();
         dealer.setDealerId(dto.getDealerId());
-        dealer.setDealerName(dto.getDealerName());
-        dealer.setDealerEmail(dto.getDealerEmail());
-        dealer.setDealerMobile(dto.getDealerMobile());
-        dealer.setDealerPassword(dto.getDealerPassword());
+        dealer.setName(dto.getName());
+        dealer.setEmail(dto.getEmail());
+        dealer.setMobile(dto.getMobile());
+        dealer.setPassword(dto.getPassword());
         dealer.setRole(dto.getRole());
         dealer.setBankDetail(dto.getBankDetail());
         dealer.setMyAddress(dto.getMyAddress());
