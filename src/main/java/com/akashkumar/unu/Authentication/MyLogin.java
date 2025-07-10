@@ -65,6 +65,7 @@ public class MyLogin implements AuthLogin{
                 courierLoginResponse.setName(getAdminData.getName());
                 courierLoginResponse.setEmail(getAdminData.getEmail());
                 courierLoginResponse.setMobile(getAdminData.getMobile());
+                courierLoginResponse.setTotalEarning(getAdminData.getTotalEarning());
                 courierLoginResponse.setRole(getAdminData.getRole());
                 ApiResponse<LoginResponse> response = new ApiResponse<>("Login Successful", courierLoginResponse);
                 return ResponseEntity.ok(response);
