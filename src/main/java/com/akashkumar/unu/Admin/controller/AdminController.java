@@ -1,12 +1,15 @@
 package com.akashkumar.unu.Admin.controller;
 
 import com.akashkumar.unu.Admin.AdminServices.AdminServices;
+import com.akashkumar.unu.Admin.dto.AdminDataResponse;
 import com.akashkumar.unu.Admin.dto.AdminDto;
 import com.akashkumar.unu.Admin.dto.BlockDealerRequest;
 import com.akashkumar.unu.Admin.dto.Login.LoginRequest;
 import com.akashkumar.unu.Admin.dto.Login.LoginResponse;
 import com.akashkumar.unu.Admin.entity.Admin;
+import com.akashkumar.unu.Admin.mapper.AdminMapper;
 import com.akashkumar.unu.Admin.repository.AdminRepository;
+import com.akashkumar.unu.Authentication.Login.FindById;
 import com.akashkumar.unu.Courier.dto.CourierDto;
 import com.akashkumar.unu.Courier.entity.Courier;
 import com.akashkumar.unu.Courier.mapper.CourierMapper;
@@ -217,6 +220,47 @@ public class AdminController implements AdminResponse {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @PostMapping("/all")
+    public ResponseEntity<?> getAllMyData(FindById findById) {
+        Optional<Admin> checkAdmin = adminRepository.findByRole(Role.ADMIN);
+
+        if (checkAdmin.isEmpty()) {
+            throw new RuntimeException("Admin not found");
+        }
+
+        Admin admin = checkAdmin.get();
+        AdminDto adminDto = AdminMapper.toDto(admin);
+
+//        List<UsersDto> userList = new ArrayList<>();
+//        List<DealerDto> dealerList = new ArrayList<>();
+//        List<CourierDto> courierList = new ArrayList<>();
+//
+//        for (String ids : admin.getUsers()) {
+//            Users user = usersRepository.findById(ids)
+//                    .orElseThrow(() -> new RuntimeException("User Not Found"));
+//            userList.add(UsersMapper.toDto(user));
+//        }
+//
+//        for (String ids : admin.getDealers()) {
+//            Dealer dealer = dealerRepository.findById(ids)
+//                    .orElseThrow(() -> new RuntimeException("Dealer Not Found"));
+//            dealerList.add(DealerMapper.toDto(dealer));
+//        }
+//
+//        for (String ids : admin.getCouriers()) {
+//            Courier courier = courierRepository.findById(ids)
+//                    .orElseThrow(() -> new RuntimeException("Courier Not Found"));
+//            courierList.add(CourierMapper.toDto(courier));
+//        }
+
+        AdminDataResponse response = new AdminDataResponse(
+                "Admin full data",
+                adminDto
+
+        );
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @Override
     @GetMapping("/getAllDealers")
     public ResponseEntity<?> getAllDealers() {
@@ -227,7 +271,6 @@ public class AdminController implements AdminResponse {
         Admin admin = me.get();
 
         List<DealerDto> dealerList = new ArrayList<>();
-
         for (String ids : admin.getDealers()){
             Optional<Dealer> dealer = dealerRepository.findById(ids);
             if (dealer.isEmpty()){
@@ -237,7 +280,6 @@ public class AdminController implements AdminResponse {
             DealerDto dto = DealerMapper.toDto(dealerData);
             dealerList.add(dto);
         }
-
         ApiResponse<?> apiResponse = new ApiResponse<>("All Dealers", dealerList);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
@@ -376,6 +418,9 @@ interface AdminResponse {
     ResponseEntity<?> blockCourier(@RequestBody BlockDealerRequest request);
     ResponseEntity<?> blockUser(@RequestBody BlockDealerRequest request);
 
+
+
+    ResponseEntity<?> getAllMyData(@RequestBody FindById findById);
     ResponseEntity<?> getAllDealers();
     ResponseEntity<?> getAllBlockDealers();
 
