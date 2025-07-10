@@ -14,11 +14,7 @@ public class CourierLoginResponse {
     private String email;
     private String mobile;
     private String password;
-
-//    private String dealerName; // dealer name nahi rahega
-
     private Role role;
-
     private double totalEarning;
     private boolean active;
     private boolean block;
